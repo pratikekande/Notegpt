@@ -1,16 +1,12 @@
 package com.project1;
 
+import com.project1.view.LoginPage;
+
 import javafx.application.Application;
-import javafx.stage.Stage;
 
-public class Main extends Application{
-    public static void main(String[] args){
-        System.out.println("Hello World");
-        launch(args);
-    }
+public class Main {
 
-    @Override
-    public void start(Stage myStage) {
-        myStage.show(); 
+    public static void main(String[] args) {
+        Application.launch(LoginPage.class);
     }
 }

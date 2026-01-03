@@ -1,0 +1,131 @@
+package com.project1.view;
+
+import javax.swing.text.html.parser.Parser;
+//import org.commonmark.parser.Parser;
+
+import com.sun.javafx.geom.Rectangle;
+import com.sun.prism.paint.Color;
+
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+public class SearchPage {
+    
+    Scene searchScene;
+    Stage stage;
+    private VBox chatBox = new VBox(15);
+    ScrollPane scrollPane = null;
+    String userName;
+
+    private Parser markdownParser = Parser.builder().build();
+    private TextContentRenderer renderer = TextContentRenderer.builder.build();
+
+    AiApiController controller = new AiApiController();
+    FormatController formatController = new FormarController();
+    NotesController notesController = new NotesController();
+
+    public void setScene(Scene searchScene){
+        this.searchScene = searchScene;
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public void set_userName(String userName){
+        this.userName = userName;
+    }
+
+    public Parent getView(Runnable back){
+        TextField inputField = new TextField();
+        inputField.setPromptText("Ask something...");
+        inputField.setStyle("-fx-background-radius: 20");
+        inputField.setFont(Font.font("Segoe UI", 14));
+        inputField.setPrefHeight(35);
+        inputField.setPrefWidth(200);
+
+        Button sendBtn = new Button("Send");
+        sendBtn.setFont(Font.font("Segoe UI Semibold", 14));
+        sendBtn.setStyle("-fx-background-color: #0078D4; -fx-text-fill: white; -fx-background-radius: 20;");
+        sendBtn.setPrefHeight(35);
+        sendBtn.setDefaultButton(true);
+
+        sendBtn.setOnAction(e -> {
+            String question = inputField.getText();
+
+            if(!question.isBlank()){
+                addUserBubble(question);
+                String response = controller.callGeminiAPI(question);
+                System.out.println(response);
+                addBotBubble(question, response);
+                inputField.clear();
+            }
+        });
+
+        scrollPane = new ScrollPane(chatBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPannable(false);
+        
+        scrollPane.setOnScroll(event -> event.consume());
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
+        chatBox.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        Label title = new Label("Search");
+        title.setStyle("-fx-text-fill: white;");
+
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color:rgb(25, 73, 109); -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 15px;");
+        
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                back.run();
+            }
+            
+        });
+
+        HBox titleBar = new HBox(50, backButton, title);
+        titleBar.setPadding(new Insets(10));
+        titleBar.setAlignment(Pos.CENTER_LEFT);
+        titleBar.setPrefHeight(50);
+        titleBar.setStyle("-fx-background-color:rgb(38, 38, 41); -fx-text-fill: white;");
+
+        HBox inputBar = new HBox(10, inputField, sendBtn);
+        inputBar.setPadding(new Insets(10, 10, 20, 10));
+        inputBar.setAlignment(Pos.CENTER);
+        inputBar.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        VBox root = new VBox(10, titleBar, scrollPane, inputBar);
+        root.setStyle("-fx-background-color: black; -fx-font-size; 20px; -fx-font-family: 'Segoe UI';");
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        Rectangle clip = new Rectangle(300, 650);
+        clip.setArcHeight(40);
+        clip.setArcWidth(40);
+        root.setClip(clip);
+         
+        return root;
+    }
+
+
+}
