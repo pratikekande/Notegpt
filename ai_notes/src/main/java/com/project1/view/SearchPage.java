@@ -5,9 +5,11 @@ import javax.swing.text.html.parser.Parser;
 
 import com.sun.javafx.geom.Rectangle;
 import com.sun.prism.paint.Color;
+import com.sun.tools.javac.util.JCDiagnostic.Note;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -125,6 +127,66 @@ public class SearchPage {
         root.setClip(clip);
          
         return root;
+    }
+
+    private void addUserBubble(String text){
+
+        Label label = new Label(text);
+        label.setWrapText(true);
+        label.setStyle("-fx-background-color:rgba(237, 66, 94, 0.42); -fx-padding: 10; -fx-background-radius: 10; -fx-font-size: 14px; -fx-text-fill: white");
+
+        HBox container = new HBox(label);
+        container.setAlignment(Pos.CENTER_RIGHT);
+        container.setPadding(new Insets(2));
+        chatBox.getChildren().add(container);
+    }
+
+    private void addBotBubble(String question, String markdown){
+        
+        String plainText = renderer.render(markdownParser.parse(markdown));
+        
+        InlineCssTextArea area = new InlineCssTextArea();
+        area.replaceText(plainText);
+        area.setWrapText(true);
+        area.setEditable(false);
+        area.setPrefWidth(600);
+        area.setStyle("-fx-background-color:rgba(34, 17, 129, 0.42);" + "-fx-font-family: 'Segoe UI';" + "-fx-font-size: 14px;" + "-fx-padding: 10px;" + "-fx-background-radius: 12;");
+
+        formatController.formatAndDisplayAIResponse(area, plainText);
+        Platform.runLater(() -> area.scrollYToPixel(0));
+        area.moveTo(0); // Move caret to start
+        Platform.runLater(() -> area.requestFollowCaret());
+
+        area.textProperty().addListener((obs, old, val) -> {
+            area.setPrefHeight(area.getTotalHeightEstimate());
+        });
+
+        HBox container = new HBox(area);
+        container.setAlignment(Pos.CENTER_LEFT);
+        
+        Label add = new Label("Add to Notes");
+        add.setStyle("-fx-font-Size: 10px");
+        VBox vb = new VBox(10, container, add);
+        add.setOnMouseClicked(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                Note note = new Note();
+                note.setQuestion(question);
+                note.setAnswer(plainText);
+                note.setUserName(userName);
+                notesController.addNote(note);
+                Snackbar.show(stage, "Note Successfully Added");
+                vb.getChildren().remove(1);
+            }
+            
+        });
+
+        vb.setAlignment(Pos.CENTER_LEFT);
+        vb.setPadding(new Insets(2));
+
+        chatBox.getChildren().add(vb);
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
     }
 
 
