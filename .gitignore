@@ -1,2 +1,4 @@
 target/
 *.class
+
+src/main/resources/firebase_key.json

@@ -74,25 +74,25 @@ public class SignupPage {
         ai_fieldBox2.setMaxSize(300, 30);
 
         // Set action for the signup button
-        // ai_signupButton.setOnAction(new EventHandler<ActionEvent>() {
+        ai_signupButton.setOnAction(new EventHandler<ActionEvent>() {
 
-        //     @Override
-        //     public void handle(ActionEvent ai_Event) {
-        //         if(!ai_userTextField.getText().isEmpty() && !ai_passTextField.getText().isEmpty()){
-        //             if(ai_userController.handleSignup(ai_userTextField.getText(), ai_passTextField.getText())){
+            @Override
+            public void handle(ActionEvent ai_Event) {
+                if(!ai_userTextField.getText().isEmpty() && !ai_passTextField.getText().isEmpty()){
+                    if(ai_userController.handelSignup(ai_userTextField.getText(), ai_passTextField.getText())){
                         
-        //                 LoginPage ai_loginPage = new LoginPage();
-        //                 ai_loginPage.getLogiScene();
-        //             } else{
+                        LoginPage ai_loginPage = new LoginPage();
+                        ai_loginPage.getLogiScene();
+                    } else{
 
-        //                 ai_output.setText("User not Registred");
-        //             }
-        //         } else{
-        //             ai_output.setText("Please Enter Username and Password");
-        //         }
-        //     }
+                        ai_output.setText("User not Registred");
+                    }
+                } else{
+                    ai_output.setText("Please Enter Username and Password");
+                }
+            }
             
-        // });
+        });
 
         // Set action for the login button
         ai_loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {

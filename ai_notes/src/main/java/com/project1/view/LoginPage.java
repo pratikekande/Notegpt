@@ -64,26 +64,26 @@ public class LoginPage extends Application {
         ai_signupButton.setStyle("-fx-background-radius: 15; -fx-text-fill: white");
 
         // Set action for the login button
-        // ai_loginButton.setOnAction(new EventHandler<ActionEvent>() {
-        //     @Override
-        //     public void handle(ActionEvent ai_event){
-        //         if(!ai_userTextField.getText().isEmpty() && !ai_passTextField.getText().isEmpty()){
-        //             if(ai_userController.authenticateUser(ai_userTextField.getText(), ai_passTextField.getText())){
+        ai_loginButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent ai_event){
+                if(!ai_userTextField.getText().isEmpty() && !ai_passTextField.getText().isEmpty()){
+                    if(ai_userController.authenticateUser(ai_userTextField.getText(), ai_passTextField.getText())){
                         
-        //                 initUserScene(ai_userTextField.getText());
-        //                 ai_primaryStage.setScene(ai_homeScene);
+                        initUserScene(ai_userTextField.getText());
+                        ai_primaryStage.setScene(ai_homeScene);
 
-        //                 ai_userTextField.clear();
-        //                 ai_passTextField.clear();
-        //             } else{
+                        ai_userTextField.clear();
+                        ai_passTextField.clear();
+                    } else{
 
-        //                 ai_output.setText("Invalid Username or Password");
-        //             }
-        //         } else{
-        //             ai_output.setText("Please Enter Username and Password");
-        //         }
-        //     }
-        // });
+                        ai_output.setText("Invalid Username or Password");
+                    }
+                } else{
+                    ai_output.setText("Please Enter Username and Password");
+                }
+            }
+        });
 
         // Set action for the signup button
         ai_signupButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
