@@ -21,41 +21,41 @@ import javafx.stage.Stage;
 
 public class HomePage {
     
-    Stage ai_primaryStage;
-    String ai_userName;
-    Scene ai_homePageScene, ai_searchPageScene, ai_notesPageScene;
+    Stage primaryStage;
+    String userName;
+    Scene homePageScene, searchPageScene, notesPageScene;
 
-    public void setScene(Scene ai_homePagScene) {
-        this.ai_homePageScene = ai_homePagScene;
+    public void setScene(Scene homePagScene) {
+        this.homePageScene = homePagScene;
     }
 
-    public void setStage(Stage ai_stage){
-        this.ai_primaryStage = ai_stage;
+    public void setStage(Stage stage){
+        this.primaryStage = stage;
     }
 
-    public void setUserName(String ai_userName){
-        this.ai_userName = ai_userName;
+    public void setUserName(String userName){
+        this.userName = userName;
     }
 
-    public Parent getView(Runnable ai_logout) {
-        Circle ai_search_circle = new Circle();
-        ai_search_circle.setRadius(70);
-        ai_search_circle.setFill(Color.WHITE);
+    public Parent getView(Runnable logout) {
+        Circle search_circle = new Circle();
+        search_circle.setRadius(70);
+        search_circle.setFill(Color.WHITE);
 
-        Circle ai_notes_circle = new Circle();
-        ai_notes_circle.setRadius(70);
-        ai_notes_circle.setFill(Color.WHITE);
+        Circle notes_circle = new Circle();
+        notes_circle.setRadius(70);
+        notes_circle.setFill(Color.WHITE);
 
-        Text ai_label_search = new Text("Search");
-        ai_label_search.setFill(Color.BLACK);
-        ai_label_search.setFont(Font.font(20));
+        Text label_search = new Text("Search");
+        label_search.setFill(Color.BLACK);
+        label_search.setFont(Font.font(20));
 
-        Text ai_label_note = new Text("Search");
-        ai_label_note.setFill(Color.BLACK);
-        ai_label_note.setFont(Font.font(20));
+        Text label_note = new Text("Search");
+        label_note.setFill(Color.BLACK);
+        label_note.setFont(Font.font(20));
 
-        StackPane ai_stack_search_circle = new StackPane(ai_search_circle, ai_label_search);
-        ai_stack_search_circle.setOnMouseClicked(new EventHandler<Event>() {
+        StackPane stack_search_circle = new StackPane(search_circle, label_search);
+        stack_search_circle.setOnMouseClicked(new EventHandler<Event>() {
 
             @Override
             public void handle(Event arg0) {
@@ -65,8 +65,8 @@ public class HomePage {
             
         });
 
-        StackPane ai_stack_notes_circle = new StackPane(ai_notes_circle, ai_label_note);
-        ai_stack_notes_circle.setOnMouseClicked(new EventHandler<Event>() {
+        StackPane stack_notes_circle = new StackPane(notes_circle, label_note);
+        stack_notes_circle.setOnMouseClicked(new EventHandler<Event>() {
 
             @Override
             public void handle(Event arg0) {
@@ -76,60 +76,60 @@ public class HomePage {
             
         });  
         
-        VBox ai_vb = new VBox(60, ai_stack_search_circle, ai_stack_notes_circle);
-        ai_vb.setStyle("-fx-alignment : center");
+        VBox vb = new VBox(60, stack_search_circle, stack_notes_circle);
+        vb.setStyle("-fx-alignment : center");
 
-        Label ai_title = new Label("Chat App");
-        ai_title.setStyle("-fx-text-fill : white");
+        Label title = new Label("Chat App");
+        title.setStyle("-fx-text-fill : white");
 
-        Button ai_backButton = new Button("Back");
-        ai_backButton.setStyle("-fx-background-color:rgb(25, 73, 109); -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 15px");
-        ai_backButton.setOnAction(new EventHandler<ActionEvent>() {
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color:rgb(25, 73, 109); -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 15px");
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent arg0) {
-                ai_logout.run();
+                logout.run();
             }
             
         });
 
-        HBox ai_titleBar = new HBox(50, ai_backButton, ai_title);
-        ai_titleBar.setPadding(new Insets(10));
-        ai_titleBar.setAlignment(Pos.CENTER_LEFT);
-        ai_titleBar.setStyle("-fx-background-color:rgb(38, 38, 41); -fx-text-fill: white;");
+        HBox titleBar = new HBox(50, backButton, title);
+        titleBar.setPadding(new Insets(10));
+        titleBar.setAlignment(Pos.CENTER_LEFT);
+        titleBar.setStyle("-fx-background-color:rgb(38, 38, 41); -fx-text-fill: white;");
 
-        VBox ai_root = new VBox(120, ai_titleBar, ai_vb);
-        ai_root.setStyle("-fx-background-color: black; -fx-alignment: top center; -fx-pref-width: 500; -fx-pref-height: 650; -fx-font-size: 20px; -fx-font-family: 'Segoe UI;");
+        VBox root = new VBox(120, titleBar, vb);
+        root.setStyle("-fx-background-color: black; -fx-alignment: top center; -fx-pref-width: 500; -fx-pref-height: 650; -fx-font-size: 20px; -fx-font-family: 'Segoe UI;");
 
-        Rectangle ai_clip = new Rectangle(300, 650);
-        ai_clip.setArcWidth(40);
-        ai_clip.setArcHeight(40);
-        ai_root.setClip(ai_clip);
+        Rectangle clip = new Rectangle(300, 650);
+        clip.setArcWidth(40);
+        clip.setArcHeight(40);
+        root.setClip(clip);
 
-        return ai_root;
+        return root;
         
     }
 
     public void openSearchPage() {
-        SearchPage ai_searchPage = new SearchPage();
-        ai_searchPage.set_ai_userName(ai_userName);
-        ai_searchPage.set_ai_stage(ai_primaryStage);
-        ai_searchPageScene = new Scene(ai_searchPage.getView(this::backToHomePage), 300, 650);
-        ai_searchPageScene.setFill(Color.TRANSPARENT);
-        ai_searchPage.setScene(ai_searchPageScene);
-        ai_primaryStage.setScene(ai_searchPageScene);
+        SearchPage searchPage = new SearchPage();
+        searchPage.set_userName(userName);
+        searchPage.setStage(primaryStage);
+        searchPageScene = new Scene(searchPage.getView(this::backToHomePage), 300, 650);
+        searchPageScene.setFill(Color.TRANSPARENT);
+        searchPage.setScene(searchPageScene);
+        primaryStage.setScene(searchPageScene);
     }
 
     public void openNotesPage() {
-        NotesPage ai_notePage = new NotesPage();
-        ai_notePage.set_ai_userName(ai_userName);
-        ai_notesPageScene = new Scene(ai_notePage.getView(this::backToHomePage), 300, 650);
-        ai_notesPageScene.setFill(Color.TRANSPARENT);
-        ai_notePage.setScene(ai_notesPageScene);
-        ai_primaryStage.setScene(ai_notesPageScene);
+        NotesPage notePage = new NotesPage();
+        notePage.userName(userName);
+        notesPageScene = new Scene(notePage.getView(this::backToHomePage), 300, 650);
+        notesPageScene.setFill(Color.TRANSPARENT);
+        notePage.setScene(notesPageScene);
+        primaryStage.setScene(notesPageScene);
     }
 
     public void backToHomePage() {
-        ai_primaryStage.setScene(ai_homePageScene);
+        primaryStage.setScene(homePageScene);
     }
 }

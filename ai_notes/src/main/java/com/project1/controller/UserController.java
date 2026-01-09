@@ -7,9 +7,10 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuth; // Keep this for the object type
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.project1.configuration.FirebaseInitialization; // Import your helper
 
 import javafx.scene.control.Alert;
 
@@ -18,9 +19,10 @@ public class UserController {
     public boolean authenticateUser(String userName, String password){
         try{
             // Firebase Web API key
-            String apiKey = "AIzaSyAGT4xdEwl_sVy-l1tm5EzDaZY7DfVykl8";
+            String apiKey = "";
 
-            URL url = new URL("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key= " + apiKey);
+            // FIX: Removed the extra space after 'key='
+            URL url = new URL("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -32,7 +34,7 @@ public class UserController {
             jsonRequest.put("email", userName);
             jsonRequest.put("password", password);
             jsonRequest.put("returnSecureToken", true);
-            System.out.println(jsonRequest.toString());
+            // System.out.println(jsonRequest.toString()); // Good for debugging, remove for production
 
             // Send the JSON request to the server
             try (OutputStream os = conn.getOutputStream()) {
@@ -42,18 +44,15 @@ public class UserController {
 
             // Check the response code to determine if login was successful
             if(conn.getResponseCode() == 200){
-
-                // Login successful
                 return true;
             } else{
-                // Login failed, show error.alert
-                showAlert("Error", "Failed to log in user.");
+                // Login failed
+                showAlert("Error", "Invalid email or password.");
                 return false;
             }
         } catch(Exception e){
             e.printStackTrace();
-            // Show alert if an exception occurs
-            showAlert("Error", "Failed to log in user: " + e.getMessage());
+            showAlert("Error", "Login connection failed: " + e.getMessage());
             return false;
         }
     }
@@ -61,23 +60,37 @@ public class UserController {
     public boolean handelSignup(String userName, String password){
 
         if(userName.isEmpty() || password.isEmpty()){
-            showAlert("Error", "UserName and password cannot be empty.");
-            return false; // Return false if email or password is empty
+            showAlert("Error", "Username and password cannot be empty.");
+            return false;
         }
 
         try {
-            // Create a new user request with provided email and password
-            UserRecord.CreateRequest request = new UserRecord.CreateRequest().setEmail(userName).setPassword(password).setDisabled(false); // Enable the user after creation
+            // Create a new user request
+            UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setEmail(userName)
+                .setPassword(password)
+                .setDisabled(false);
 
-            // Create the user in Firebase Authentication
-            UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
+            // FIX: Use your helper class to get the Auth instance
+            // This prevents the "Default app doesn't exist" error
+            // (Assumes you called FirebaseInitialization.init() in your Main class)
+            FirebaseAuth auth = FirebaseInitialization.getFirebaseAuth();
+            
+            UserRecord userRecord = auth.createUser(request);
+            
             System.out.println("Successfully created user: " + userRecord.getUid());
             showAlert("Success", "User created successfully.");
-            return true; // Return true if signup was successful 
+            return true; 
+
         } catch(FirebaseAuthException e){
             e.printStackTrace();
-            showAlert("Error", "Failed to create user :" + e.getMessage());
-            return false; // Return false if signup failed
+            showAlert("Error", "Failed to create user: " + e.getMessage());
+            return false;
+        } catch(IllegalStateException e) {
+             // Catch the specific initialization error to give a better hint
+             e.printStackTrace();
+             showAlert("System Error", "Database not connected. Please restart the app.");
+             return false;
         }
     }
 

@@ -2,11 +2,15 @@ package com.project1.view;
 
 import java.util.List;
 
-import com.sun.glass.events.MouseEvent;
-import com.sun.javafx.geom.Rectangle;
-import com.sun.org.apache.xml.internal.security.keys.content.KeyValue;
+import com.project1.controller.FormatController;
+import com.project1.controller.NotesController;
+import com.project1.model.Note;
+import javafx.scene.input.MouseEvent; 
+import javafx.scene.shape.Rectangle; 
+
 
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -100,7 +104,7 @@ public class NotesPage {
         return root;
     }
 
-    private Pane createCard(String title, String expandedContent) {
+    private Pane createCard(String title, String expandedcontentt) {
         
         VBox card = new VBox();
         card.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(8), Insets.EMPTY)));
@@ -112,51 +116,51 @@ public class NotesPage {
         Label titleLabel = new Label(title);
         titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; ");
 
-        // The expanded content area initially hidden
-        Label contenLabel = new Label(expandedContent);
-        contenLabel.setWrapText(true);
-        contenLabel.setPadding(new Insets(10, 0, 0, 0));
-        contenLabel.setMaxWidth(380);
-        contenLabel.setVisible(false);
-        contenLabel.setManaged(false);
-        contenLabel.setStyle("-fx-font-size: 14px");
+        // The expanded contentt area initially hidden
+        Label contentLabel = new Label(expandedcontentt);
+        contentLabel.setWrapText(true);
+        contentLabel.setPadding(new Insets(10, 0, 0, 0));
+        contentLabel.setMaxWidth(380);
+        contentLabel.setVisible(false);
+        contentLabel.setManaged(false);
+        contentLabel.setStyle("-fx-font-size: 14px");
 
-        card.getChildren().addAll(titleLabel, contenLabel);
+        card.getChildren().addAll(titleLabel, contentLabel);
 
         // Toggle expand/collapse on click
         card.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             boolean isVisible = contentLabel.isVisible();
             if(isVisible){
-                collapse(contenLabel);
+                collapse(contentLabel);
             } else {
-                expand(contenLabel);
+                expand(contentLabel);
             }
         });
 
         return card;
     }
 
-    private void expand(Label content){
-        content.setVisible(true);
-        content.setManaged(true);
+    private void expand(Label contentt){
+        contentt.setVisible(true);
+        contentt.setManaged(true);
 
         //Animate height grow
-        content.setOpacity(0);
-        Timeline fadeIn = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(content.opacityProperty(), 0)), 
-        new KeyFrame(Duration.millis(250), KeyValue(content.opacityProperty(), 1))
+        contentt.setOpacity(0);
+        Timeline fadeIn = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(contentt.opacityProperty(), 0)), 
+        new KeyFrame(Duration.millis(250),new KeyValue(contentt.opacityProperty(), 1))
         );
         fadeIn.play();
     }
 
-    private void collapse(Label content){
+    private void collapse(Label contentt){
 
         // Animate height shrink
-        Timeline fadeOut = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(content.opacityProperty(), 1)), 
-        new KeyFrame(Duration.millis(250), KeyValue(content.opacityProperty(), 0))
+        Timeline fadeOut = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(contentt.opacityProperty(), 1)), 
+        new KeyFrame(Duration.millis(250),new KeyValue(contentt.opacityProperty(), 0))
         );
         fadeOut.setOnFinished(e -> {
-            content.setVisible(false);
-            content.setManaged(false);
+            contentt.setVisible(false);
+            contentt.setManaged(false);
         });
         fadeOut.play();
     }

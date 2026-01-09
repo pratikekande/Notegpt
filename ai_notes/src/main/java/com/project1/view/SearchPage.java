@@ -1,11 +1,17 @@
 package com.project1.view;
 
-import javax.swing.text.html.parser.Parser;
-//import org.commonmark.parser.Parser;
+import org.commonmark.parser.Parser; 
 
-import com.sun.javafx.geom.Rectangle;
-import com.sun.prism.paint.Color;
-import com.sun.tools.javac.util.JCDiagnostic.Note;
+import org.commonmark.renderer.text.TextContentRenderer;
+import org.fxmisc.richtext.InlineCssTextArea;
+
+import com.project1.controller.AiApiController;
+import com.project1.controller.FormatController;
+import com.project1.controller.NotesController;
+import com.project1.model.Note;
+import com.project1.utilities.Snackbar;
+import javafx.scene.shape.Rectangle; 
+import javafx.scene.paint.Color; 
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -37,10 +43,10 @@ public class SearchPage {
     String userName;
 
     private Parser markdownParser = Parser.builder().build();
-    private TextContentRenderer renderer = TextContentRenderer.builder.build();
+    private TextContentRenderer renderer = TextContentRenderer.builder().build();
 
     AiApiController controller = new AiApiController();
-    FormatController formatController = new FormarController();
+    FormatController formatController = new FormatController();
     NotesController notesController = new NotesController();
 
     public void setScene(Scene searchScene){
@@ -119,7 +125,7 @@ public class SearchPage {
         inputBar.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         VBox root = new VBox(10, titleBar, scrollPane, inputBar);
-        root.setStyle("-fx-background-color: black; -fx-font-size; 20px; -fx-font-family: 'Segoe UI';");
+        root.setStyle("-fx-background-color: black; -fx-font-size: 20px; -fx-font-family: 'Segoe UI';");
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
         Rectangle clip = new Rectangle(300, 650);
         clip.setArcHeight(40);

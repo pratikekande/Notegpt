@@ -1,5 +1,6 @@
 package com.project1.view;
 
+import com.project1.configuration.FirebaseInitialization; // Import the init class
 import com.project1.controller.UserController;
 
 import javafx.application.Application;
@@ -9,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,158 +22,178 @@ import javafx.stage.StageStyle;
 
 public class LoginPage extends Application {
 
-    private Stage ai_primaryStage;
-    private Scene ai_loginScene, ai_homeScene;
-    private UserController ai_userController = new UserController();
-    public static String ai_key;
+    private Stage primaryStage;
+    private Scene loginScene, homeScene;
+    private UserController userController = new UserController();
+    
+    // Variables for window dragging (since style is TRANSPARENT)
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     // Method to initialize the login page
-    public void getLoginPage(Stage ai_primaryStage){
-        this.ai_primaryStage = ai_primaryStage;
+    public void getLoginPage(Stage primaryStage){
+        this.primaryStage = primaryStage;
         initLoginScene();
     }
 
-    //Method to initialize the login scene
+    // Method to initialize the login scene
     private void initLoginScene() {
         
-        ImageView ai_logo = new ImageView("Assets//Images//Notegpt.png"); // add image path
-        ai_logo.setFitWidth(120);
-        ai_logo.setPreserveRatio(true);
+        ImageView logo = new ImageView("Assets/Images/Notegpt.png"); // Fixed slash direction for cross-platform compatibility
+        logo.setFitWidth(120);
+        logo.setPreserveRatio(true);
 
-        Label ai_title = new Label("Login");
-        ai_title.setStyle("-fx-font-size:25; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 30; -fx-alignment: CENTER; -fx-text-fill:#FFFFFFF");
+        Label title = new Label("Login");
+        title.setStyle("-fx-font-size:25; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 30; -fx-alignment: CENTER; -fx-text-fill: #FFFFFF");
 
-        VBox ai_header = new VBox(20, ai_logo, ai_title);
-        ai_header.setAlignment(Pos.CENTER);
+        VBox header = new VBox(20, logo, title);
+        header.setAlignment(Pos.CENTER);
 
-        Label ai_userLabel = new Label("Username:");
-        TextField ai_userTextField = new TextField();
-        ai_userTextField.setPromptText("Enter Username");
-        ai_userTextField.setStyle("-fx-max-width: 270; -fx-min-height: 30; -fx-background-radius: 15");
-        ai_userTextField.setFocusTraversable(false);
+        Label userLabel = new Label("Username:");
+        TextField userTextField = new TextField();
+        userTextField.setPromptText("Enter Username");
+        userTextField.setStyle("-fx-max-width: 270; -fx-min-height: 30; -fx-background-radius: 15");
+        userTextField.setFocusTraversable(false);
 
-        Label ai_passLabel = new Label("Password:");
-        TextField ai_passTextField = new TextField();
-        ai_passTextField.setPromptText("Enter Password");
-        ai_passTextField.setStyle("-fx-max-width: 270; -fx-min-height: 30; -fx-background-radius: 15");
-        ai_passTextField.setFocusTraversable(false);
+        Label passLabel = new Label("Password:");
+        PasswordField passTextField = new PasswordField();
+        passTextField.setPromptText("Enter Password");
+        passTextField.setStyle("-fx-max-width: 270; -fx-min-height: 30; -fx-background-radius: 15");
+        passTextField.setFocusTraversable(false);
 
-        Label ai_output = new Label();
-        ai_output.setStyle("-fx-text-fill: white;");
-        Button ai_loginButton = new Button("Login");
-        ai_loginButton.setStyle("-fx-prefwidth: 70; -fx-min-height: 30; -fx-background-radius: 15; -fx-background-color: #2196F3; -fx-text-fill: #FFFFFFF");
-        Label ai_signupButton = new Label("Signup");
-        ai_signupButton.setStyle("-fx-background-radius: 15; -fx-text-fill: white");
+        Label output = new Label();
+        output.setStyle("-fx-text-fill: white;");
+        
+        Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-pref-width: 70; -fx-min-height: 30; -fx-background-radius: 15; -fx-background-color: #2196F3; -fx-text-fill: #FFFFFF");
+        
+        Label signupButton = new Label("Signup");
+        signupButton.setStyle("-fx-background-radius: 15; -fx-text-fill: white");
 
         // Set action for the login button
-        ai_loginButton.setOnAction(new EventHandler<ActionEvent>() {
+        loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent ai_event){
-                if(!ai_userTextField.getText().isEmpty() && !ai_passTextField.getText().isEmpty()){
-                    if(ai_userController.authenticateUser(ai_userTextField.getText(), ai_passTextField.getText())){
+            public void handle(ActionEvent event){
+                if(!userTextField.getText().isEmpty() && !passTextField.getText().isEmpty()){
+                    if(userController.authenticateUser(userTextField.getText(), passTextField.getText())){
                         
-                        initUserScene(ai_userTextField.getText());
-                        ai_primaryStage.setScene(ai_homeScene);
+                        initUserScene(userTextField.getText());
+                        primaryStage.setScene(homeScene);
 
-                        ai_userTextField.clear();
-                        ai_passTextField.clear();
+                        userTextField.clear();
+                        passTextField.clear();
                     } else{
-
-                        ai_output.setText("Invalid Username or Password");
+                        output.setText("Invalid Username or Password");
                     }
                 } else{
-                    ai_output.setText("Please Enter Username and Password");
+                    output.setText("Please Enter Username and Password");
                 }
             }
         });
 
         // Set action for the signup button
-        ai_signupButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        signupButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent ai_Event){
+            public void handle(MouseEvent Event){
                 showSignupScene();
-                ai_userTextField.clear();
-                ai_passTextField.clear();
+                userTextField.clear();
+                passTextField.clear();
             }
         });
 
         // Style the labels
-        ai_userLabel.setStyle("-fx-text-fill: white");
-        ai_passLabel.setStyle("-fx-text-fill: white");
+        userLabel.setStyle("-fx-text-fill: white");
+        passLabel.setStyle("-fx-text-fill: white");
 
         // Create VBox layouts for the fields and buttons
-        VBox ai_fieldBox1 = new VBox(10, ai_userLabel, ai_userTextField); // VBox for username
-        ai_fieldBox1.setMaxSize(300, 30);
-        VBox ai_fieldBox2 = new VBox(10, ai_passLabel, ai_passTextField); // VBox for password
-        ai_fieldBox2.setMaxSize(300, 30);
+        VBox fieldBox1 = new VBox(10, userLabel, userTextField); 
+        fieldBox1.setMaxSize(300, 30);
+        VBox fieldBox2 = new VBox(10, passLabel, passTextField); 
+        fieldBox2.setMaxSize(300, 30);
 
-        // Main VBox layout for the loginn page
-        VBox ai_logiBox = new VBox(20, ai_header, ai_fieldBox1, ai_fieldBox2, ai_loginButton, ai_signupButton, ai_output);
-        ai_logiBox.setStyle("-fx-pref-height : 200; -fx-alignment : CENTER; -fx-padding: 30; -fx-background-color: rgba(0, 0, 0);");
-        ai_logiBox.setMaxSize(300, 200);
+        // Main VBox layout for the login page
+        VBox logiBox = new VBox(20, header, fieldBox1, fieldBox2, loginButton, signupButton, output);
+        logiBox.setStyle("-fx-pref-height : 200; -fx-alignment : CENTER; -fx-padding: 30; -fx-background-color: rgba(0, 0, 0);");
+        logiBox.setMaxSize(300, 200);
+
+        // Enable Window Dragging
+        logiBox.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        logiBox.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
 
         Rectangle clip = new Rectangle(300, 650);
         clip.setArcWidth(40);
         clip.setArcHeight(40);
-        ai_logiBox.setClip(clip);
+        logiBox.setClip(clip);
 
-        ai_loginScene = new Scene(ai_logiBox, 300, 650);
-        ai_loginScene.setFill(Color.TRANSPARENT);
-
+        loginScene = new Scene(logiBox, 300, 650);
+        loginScene.setFill(Color.TRANSPARENT);
     }
 
     // Method to initialize the user scene
     private void initUserScene(String userName){
-        HomePage ai_homePage = new HomePage();
-        ai_homePage.setStage(ai_primaryStage);
-        ai_homePage.setUserName(userName);
-        ai_homeScene = new Scene(ai_homePage.getView(this::handeleLogout), 300, 650);
-        ai_homeScene.setFill(Color.TRANSPARENT);
-        ai_homePage.setScene(ai_homeScene);
-
+        // Assuming HomePage is correctly implemented in your project
+        HomePage homePage = new HomePage();
+        homePage.setStage(primaryStage);
+        homePage.setUserName(userName);
+        
+        // This relies on HomePage being implemented correctly
+        homeScene = new Scene(homePage.getView(this::handeleLogout), 300, 650);
+        homeScene.setFill(Color.TRANSPARENT);
+        homePage.setScene(homeScene);
     }
 
     // Method to get the login scene
     public Scene getLogiScene() {
-        return ai_loginScene;
+        return loginScene;
     }
 
     // Method to show the login scene
     public void showLoginScene() {
-        ai_primaryStage.setScene(ai_loginScene);
-        ai_primaryStage.show();
+        primaryStage.setScene(loginScene);
+        primaryStage.show();
     }
 
     // Method to show the signup scene
     private void showSignupScene() {
         SignupPage signupPage = new SignupPage();
+        // pass "this::handleBack" so the Signup page knows how to return here
         Scene signupScene = new Scene(signupPage.createSignupScene(this::handleBack), 300, 650);
         signupScene.setFill(Color.TRANSPARENT);
-        ai_primaryStage.setScene(signupScene);
-        ai_primaryStage.show();
+        primaryStage.setScene(signupScene);
+        primaryStage.show();
     }
 
     //Method to handle logout action
     private void handeleLogout() {
-        ai_primaryStage.setScene(ai_loginScene);
+        primaryStage.setScene(loginScene);
     }
 
     // Method to handle back action from signup
     private void handleBack() {
-        ai_loginScene.setFill(Color.TRANSPARENT);
-        ai_primaryStage.setScene(ai_loginScene);
+        loginScene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(loginScene);
     }
 
     @Override
-    public void start(Stage ai_priStage) throws Exception {
+    public void start(Stage priStage) throws Exception {
         
-        getLoginPage(ai_priStage);
-        ai_primaryStage.setScene(getLogiScene());
-        ai_primaryStage.setTitle("ChatApp");
-        ai_primaryStage.initStyle(StageStyle.TRANSPARENT);
-        ai_primaryStage.show();
+        // --- CRITICAL FIX: Initialize Firebase at startup ---
+        FirebaseInitialization.init();
+        
+        getLoginPage(priStage);
+        primaryStage.setScene(getLogiScene());
+        primaryStage.setTitle("ChatApp");
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.show();
     }
-
     
-    
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

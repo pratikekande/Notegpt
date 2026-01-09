@@ -23,20 +23,31 @@ public class FirebaseInitialization {
     }
 
     public static void init() {
-        if(firebaseApp == null){
-            try{
-                FileInputStream serviceAccount = new FileInputStream("src/main/resources/firebase_key.json");
+    if (firebaseApp == null) {
+        try {
+            // CORRECT WAY: Load from classpath (works in IDE and JAR)
+            // ensure the json file is actually in src/main/resources/
+            var serviceAccount = FirebaseInitialization.class.getClassLoader().getResourceAsStream("firebase_key.json");
 
-                FirebaseOptions options = FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId("notegpt-a3bac").build();
-
-                firebaseApp = FirebaseApp.initializeApp(options);
-            } catch(IOException e){
-                LOGGER.log(Level.SEVERE, "Error Initializing Firebase: "+ e.getMessage(), e);
+            if (serviceAccount == null) {
+                throw new IOException("File not found: firebase_key.json");
             }
-        } else{
-            LOGGER.warning("FirebaseApp already initialized. Skipping initialization");
+
+            FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setProjectId("notegpt-a3bac")
+                .build();
+
+            firebaseApp = FirebaseApp.initializeApp(options);
+            LOGGER.info("Firebase Initialized Successfully");
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error Initializing Firebase: " + e.getMessage(), e);
+            // Optionally: Exit the app here because it cannot function without DB
+            // System.exit(1); 
         }
     }
+}
 
     public static FirebaseAuth getFirebaseAuth() {
         if(firebaseApp == null){
