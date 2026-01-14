@@ -58,20 +58,13 @@ It allows users to ask questions, receive AI-generated answers, and **save those
 
 ## 📸 Screenshots
 
-*(Add screenshots here just like SmartRent+)*
-
-Example:
-```md
-## 📸 Screenshots
-
 ### Login Screen
-![Login](uploads/<hash>/login.png)
+<img width="221" height="480" alt="login" src="https://github.com/user-attachments/assets/ad9acc21-c128-406c-a0f3-c3091a5325e8" />
 
 ### Home Page (Search & Notes)
-![Home](uploads/<hash>/home.png)
+<img width="214" height="483" alt="Home Page" src="https://github.com/user-attachments/assets/35f8ff2d-86c8-421e-8191-ba6ab84d40c0" />
 
 ### AI Chat Interface
-![Chat](uploads/<hash>/chat.png)
+<img width="221" height="485" alt="Search" src="https://github.com/user-attachments/assets/4fc58116-fd96-4541-a69e-831689220277" />
 
 ### Saved Notes
-![Notes](uploads/<hash>/notes.png)
