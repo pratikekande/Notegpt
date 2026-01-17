@@ -50,7 +50,7 @@ public class HomePage {
         label_search.setFill(Color.BLACK);
         label_search.setFont(Font.font(20));
 
-        Text label_note = new Text("Search");
+        Text label_note = new Text("Notes");
         label_note.setFill(Color.BLACK);
         label_note.setFont(Font.font(20));
 
@@ -82,7 +82,7 @@ public class HomePage {
         Label title = new Label("Chat App");
         title.setStyle("-fx-text-fill : white");
 
-        Button backButton = new Button("Back");
+        Button backButton = new Button("Logout");
         backButton.setStyle("-fx-background-color:rgb(25, 73, 109); -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 15px");
         backButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -99,7 +99,7 @@ public class HomePage {
         titleBar.setStyle("-fx-background-color:rgb(38, 38, 41); -fx-text-fill: white;");
 
         VBox root = new VBox(120, titleBar, vb);
-        root.setStyle("-fx-background-color: black; -fx-alignment: top center; -fx-pref-width: 500; -fx-pref-height: 650; -fx-font-size: 20px; -fx-font-family: 'Segoe UI;");
+        root.setStyle("-fx-background-color: black; -fx-alignment: TOP_CENTER; -fx-pref-width: 500; -fx-pref-height: 650; -fx-font-size: 20px; -fx-font-family: 'Segoe UI';");
 
         Rectangle clip = new Rectangle(300, 650);
         clip.setArcWidth(40);

@@ -63,7 +63,7 @@ public class NotesPage {
         chatBox.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 
         List<Note> notes = notesController.getAllNotesForUser(userName);
-        System.out.println(notes);
+        //System.out.println(notes);
         notes.forEach(note ->{
 
             //addUserBubble
@@ -110,7 +110,7 @@ public class NotesPage {
         card.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(8), Insets.EMPTY)));
         card.setPadding(new Insets(10));
         card.setMaxWidth(Double.MAX_VALUE);
-        card.setStyle("-fx-background-color:rgba(34, 17, 129, 0.42); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.5, 0.2);");
+        card.setStyle("-fx-background-color:rgba(34, 17, 129, 0.42); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.5, 0, 0);");
         card.setSpacing(10);
 
         Label titleLabel = new Label(title);

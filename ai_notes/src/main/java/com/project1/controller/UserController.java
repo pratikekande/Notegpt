@@ -19,7 +19,7 @@ public class UserController {
     public boolean authenticateUser(String userName, String password){
         try{
             // Firebase Web API key
-            String apiKey = "";
+            String apiKey = "AIzaSyAGT4xdEwl_sVy-l1tm5EzDaZY7DfVykl8";
 
             // FIX: Removed the extra space after 'key='
             URL url = new URL("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey);
