@@ -65,6 +65,8 @@ It allows users to ask questions, receive AI-generated answers, and **save those
 <img width="214" height="483" alt="Home Page" src="https://github.com/user-attachments/assets/35f8ff2d-86c8-421e-8191-ba6ab84d40c0" />
 
 ### AI Chat Interface
-<img width="221" height="485" alt="Search" src="https://github.com/user-attachments/assets/4fc58116-fd96-4541-a69e-831689220277" />
+<img width="227" height="490" alt="notegpt-search" src="https://github.com/user-attachments/assets/2fb11a2c-4153-4c0a-a31d-1e07bdea929c" />
 
 ### Saved Notes
+<img width="224" height="485" alt="notegpt- notes" src="https://github.com/user-attachments/assets/504c7543-8c0d-4d60-b549-7b84552ba49c" />
+
